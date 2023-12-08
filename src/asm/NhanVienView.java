@@ -215,11 +215,6 @@ public class NhanVienView extends javax.swing.JFrame {
                 btnDeleteMouseClicked(evt);
             }
         });
-        btnDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteActionPerformed(evt);
-            }
-        });
 
         btnFind.setText("Find");
         btnFind.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -394,7 +389,13 @@ public class NhanVienView extends javax.swing.JFrame {
         String tuoi = txtTuoi.getText();
         String email = txtEmail.getText();
         String luong = txtLuong.getText();
-        Integer tuoiNV = Integer.parseInt(tuoi);
+
+        Integer tuoiNV;
+        if (!tuoi.isEmpty()) {
+            tuoiNV = Integer.parseInt(tuoi);
+        } else {
+            tuoiNV = 0;
+        }
         double luongNV;
         if (!luong.isEmpty()) {
             luongNV = Double.parseDouble(luong);
@@ -466,20 +467,17 @@ public class NhanVienView extends javax.swing.JFrame {
     private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
         // TODO add your handling code here:
         String maNV = txtMaNhanVien.getText();
+        int i = tblNhanVien.getSelectedRow();
         if (maNV.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Xin nhập mã nhân viên");
-
-        } else {
-            ArrayList<NhanVien> sauKhiXoa = quanLyNhanVien.delete(maNV);
-            if (sauKhiXoa.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Không có người này trong danh sách");
-
-            } else {
-                JOptionPane.showMessageDialog(this, "Xoá thành công");
-                loadData(sauKhiXoa);
-
-            }
+            return;
         }
+        if (i > 0) {
+            list.remove(i);
+            loadData(list);
+            quanLyNhanVien.ghiFile(fileName);
+        }
+
 
     }//GEN-LAST:event_btnDeleteMouseClicked
 
@@ -609,7 +607,7 @@ public class NhanVienView extends javax.swing.JFrame {
             txtLuong.setText(String.valueOf(list.get(i).getLuong()));
             tblNhanVien.setRowSelectionInterval(i, i);
             lblRecord.setText("Record: " + (i + 1) + " of " + quanLyNhanVien.getListNhanVien().size());
-            
+
         }
 
 
@@ -634,10 +632,6 @@ public class NhanVienView extends javax.swing.JFrame {
         t1.start();
 
     }//GEN-LAST:event_formWindowOpened
-
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**
      * @param args the command line arguments

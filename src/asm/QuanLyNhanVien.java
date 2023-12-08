@@ -19,18 +19,17 @@ import javax.swing.JOptionPane;
  *
  * @author admin
  */
-public class QuanLyNhanVien implements NhanVienInter {
+public class QuanLyNhanVien {
 
     ArrayList<NhanVien> listNhanVien = new ArrayList<>();
     private static final String P_EMAIL = "^[A-Za-z0-9+_.-]+@(.+)$";
 
-    @Override
-    public ArrayList<NhanVien> fakeData() {
+    public QuanLyNhanVien() {
         listNhanVien.add(new NhanVien("NV01", "Nguyễn Hữu Nghĩa", "23", "nghianhph46340@gmail.com", 9999999.87878));
         listNhanVien.add(new NhanVien("NV02", "Hoàng Thọ Chính", "18", "chinh12345@gmail.com", 922999.87878));
         listNhanVien.add(new NhanVien("NV03", "Phạm Thị Quỳnh Thu", "21", "Thuptq@gmail.com", 978999.87878));
         listNhanVien.add(new NhanVien("NV04", "Phùn Văn Lềnh", "20", "lenhpvph46331@gmail.com", 6799999.87878));
-        return listNhanVien;
+        
     }
 
     ArrayList<NhanVien> getListNhanVien() {
@@ -53,7 +52,8 @@ public class QuanLyNhanVien implements NhanVienInter {
             if (!file.exists()) {
                 file.createNewFile();
             }
-            try (FileOutputStream fos = new FileOutputStream(file); ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+            try (FileOutputStream fos = new FileOutputStream(file); 
+                    ObjectOutputStream oos = new ObjectOutputStream(fos)) {
                 for (NhanVien nhanVien : listNhanVien) {
                     oos.writeObject(nhanVien);
                 }
@@ -70,7 +70,8 @@ public class QuanLyNhanVien implements NhanVienInter {
             if (!file.exists()) {
                 return "File không tồn tại";
             }
-            try (FileInputStream fis = new FileInputStream(file); ObjectInputStream ois = new ObjectInputStream(fis)) {
+            try (FileInputStream fis = new FileInputStream(file); 
+                    ObjectInputStream ois = new ObjectInputStream(fis)) {
                 while (fis.available() > 0) {
                     listNhanVien.add((NhanVien) ois.readObject());
                 }
@@ -124,17 +125,18 @@ public class QuanLyNhanVien implements NhanVienInter {
         return matcher.matches();
     }
 
-    ArrayList<NhanVien> delete(String maNV) {
-        ArrayList<NhanVien> listSauKhiXoa = new ArrayList<>();
+    public ArrayList<NhanVien> delete(String maNV) {
         for (NhanVien nhanVien : listNhanVien) {
             if (nhanVien.getMaNhanVien().equals(maNV)) {
-                listSauKhiXoa.remove(nhanVien);
+                listNhanVien.remove(nhanVien);
             } else {
-                listSauKhiXoa.add(nhanVien);
+                listNhanVien.add(nhanVien);
             }
         }
 
-        return listSauKhiXoa;
+        return listNhanVien;
     }
+
+
 
 }
